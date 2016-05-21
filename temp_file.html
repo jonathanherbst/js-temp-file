@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <script src="temp_file.js"></script>
+
+        <script>
+            var file = null;
+            function doGenerate()
+            {
+                var req = openTempFile("test.bin");
+                req.onsuccess = function(f)
+                {
+                    file = f;
+                    var req = generate(file, 1024, 1024);
+                    req.onsuccess = function()
+                    {
+                        console.log('generate', "done");
+                    }
+                    req.onerror = function()
+                    {
+                        console.log('generate', "error");
+                    }
+                }
+            }
+
+            function doURL()
+            {
+                var req = file.url();
+                req.onsuccess = function(url)
+                {
+                    //var link = document.getElementById('url');
+                    //link.setAttribute('href', url);
+                    var form = document.createElement('form');
+                    form.action = url;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+        </script>
+    </head>
+
+
+    <body>
+        <button onclick="doGenerate()">Generate Data</button>
+        <button onclick="doURL()">Generate Link</button>
+        <a id="url">data</a>
+    </body>
+</html>
